@@ -22,13 +22,6 @@
           // code.
 
           FB.api('/me/accounts', function(response1) {
-            // var p_accessToken = response.data[0].access_token;
-            // var p_name = response.data[0].name;
-            // alert('The pagename is:'
-            //         + p_name + 'Page access token is'
-            //         + p_accessToken);}
-            // ,{scope:"manage_pages"});
-            //console.log(response.data[0].name);
             console.log(JSON.stringify(response1.data));
           });
 
@@ -86,40 +79,13 @@
                 }
               }
           );
-
-
         }, {scope:'manage_pages, publish_pages'});
 
-
-
-        /* make the API call */
-        // FB.api(
-        //   "/1051908698154339/feed",
-        //   function (response) {
-        //     if (response && !response.error) {
-        //       /* handle the result */
-        //       console.log(response);
-        //     }
-        //   }
-        // );
-
-        // FB.api(
-        //   '/1051908698154339?fields=access_token',
-        //   'GET',
-        //   {},
-        //   function(response) {
-        //       // Insert your code here
-        //       console.log(response);
-        //   }
-        // );
 
         FB.getLoginStatus(function(response) {
           if (response.status === 'connected') {
             var accessToken = response.authResponse.accessToken;
-            console.log(accessToken);
-
-
-
+            //console.log(accessToken);
             };
         });
 
