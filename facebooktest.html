@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <script src="./moment.min.js"> </script>
+  </head>
+  <body>
+    <div id="fb-root"></div>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId            : '1589800797697810',
+          autoLogAppEvents : true,
+          xfbml            : true,
+          version          : 'v2.9'
+        });
+        FB.AppEvents.logPageView();
+
+        FB.login(function(response){
+          // Handle the response object, like in statusChangeCallback() in our demo
+          // code.
+
+          FB.api('/me/accounts', function(response1) {
+            // var p_accessToken = response.data[0].access_token;
+            // var p_name = response.data[0].name;
+            // alert('The pagename is:'
+            //         + p_name + 'Page access token is'
+            //         + p_accessToken);}
+            // ,{scope:"manage_pages"});
+            //console.log(response.data[0].name);
+            console.log(JSON.stringify(response1.data));
+          });
+
+          FB.api(
+            '/310163999410508/feed',
+            'GET',
+            {},
+            function(response) { //analyzing all posts instead of most recent 10
+              var count =0;
+              var max = -1;
+              var secondsInWeek = 604800;
+
+              var i = 0;
+              var currPost, nextPost;
+              for(i = 0; i < response.data.length - 1 ; i++ ){
+                currPost = moment(response.data[i].created_time).unix();
+                nextPost = moment(response.data[i+1].created_time).unix();
+                if((currPost - nextPost)  < secondsInWeek && (currPost - nextPost) > 86400)
+                  { count++;  }
+                else{
+                  if(count > max){
+                     max = count;
+                     console.log(max+" weeks in a row");
+                   }
+                  count = 0;
+
+                }
+                //console.log(JSON.stringify(response.data[i].created_time));
+
+              }
+              console.log(new Date('2011-04-11T10:20:30Z'));
+
+                //The Recent Check
+                if(response.data[0].created_time > moment().subtract(10, 'days').calendar())
+                  console.log("I have posted in the last 10 days.");
+
+
+
+            }
+          );
+        }, {scope:'manage_pages, publish_pages'});
+
+
+
+        /* make the API call */
+        // FB.api(
+        //   "/1051908698154339/feed",
+        //   function (response) {
+        //     if (response && !response.error) {
+        //       /* handle the result */
+        //       console.log(response);
+        //     }
+        //   }
+        // );
+
+        // FB.api(
+        //   '/1051908698154339?fields=access_token',
+        //   'GET',
+        //   {},
+        //   function(response) {
+        //       // Insert your code here
+        //       console.log(response);
+        //   }
+        // );
+
+        FB.getLoginStatus(function(response) {
+          if (response.status === 'connected') {
+            var accessToken = response.authResponse.accessToken;
+            console.log(accessToken);
+
+
+
+            };
+        });
+
+
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=1589800797697810";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+
+    <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="login_with" data-show-faces="true" data-auto-logout-link="true" data-use-continue-as="true"></div>
+  </body>
+</html>
