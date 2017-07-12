@@ -22,7 +22,7 @@
           // code.
 
           FB.api('/me/accounts', function(response1) {
-            console.log(JSON.stringify(response1.data));
+            //console.log(JSON.stringify(response1.data));
           });
 
           FB.api(
@@ -45,7 +45,7 @@
                 nextPost = moment(response.data[i+1].created_time).unix();
                 }
 
-                if( (currPost - nextPost)  < oneWeek && (currPost - nextPost) > oneDay){
+                if((currPost - nextPost)<oneWeek   &&    (currPost - nextPost)>oneDay){
                     streak++;
                     console.log(moment(response.data[i].created_time).calendar());
                     console.log(moment(response.data[i+1].created_time).calendar());
@@ -53,13 +53,13 @@
                      max = streak;
                      console.log(max + "posts less then a week apart but more than a day apart.");
                      streak = 0;
-                }  else {
+                   }
+                  else {
                   continue;
-
-                   //console.log(max + " posts less then a week apart");
+                   console.log(max + " posts less then a week apart");
                 }
                 //console.log(JSON.stringify(response.data[i].created_time));
-              }}
+              };
               console.log(response.data[0].id); //310163999410508_310898579337050
 
                 //The Recent Check
@@ -67,8 +67,7 @@
                   console.log("I have posted in the last 10 days.");
                 }
 
-            }
-          );
+            });
 
           /* make the API call */
           FB.api(
