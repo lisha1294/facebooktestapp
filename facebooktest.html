@@ -49,15 +49,20 @@
                     streak++;
                     console.log(moment(response.data[i].created_time).calendar());
                     console.log(moment(response.data[i+1].created_time).calendar());
-                  }  else if (streak >= max){
+                  }
+                else if(currPost - nextPost < oneDay && i != response.data.length -1){
+                   console.log(max + " (streak interrupted but not reset) ");
+                   continue;
+                 }
+                else {
+                    if (streak >= max || i == response.data.length -1){
                      max = streak;
-                     console.log(max + "posts less then a week apart but more than a day apart.");
+                     console.log(streak + "(new streak)");
+                     //console.log(max + "posts less then a week apart but more than a day apart.");
                      streak = 0;
                    }
-                  else {
-                  continue;
-                   console.log(max + " posts less then a week apart");
-                }
+                 }
+
                 //console.log(JSON.stringify(response.data[i].created_time));
               };
               console.log(response.data[0].id); //310163999410508_310898579337050
