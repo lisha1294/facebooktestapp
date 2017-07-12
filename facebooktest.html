@@ -33,42 +33,61 @@
           });
 
           FB.api(
-            '/310163999410508/feed',
+            '/myprofessors/feed',
             'GET',
             {},
             function(response) { //analyzing all posts instead of most recent 10
-              var count =0;
+              var streak = 0;
               var max = -1;
-              var secondsInWeek = 604800;
-
+              var oneWeek = 604800;
+              var twoWeeks = 1209600;
+              var oneDay= 86400;
               var i = 0;
               var currPost, nextPost;
-              for(i = 0; i < response.data.length - 1 ; i++ ){
-                currPost = moment(response.data[i].created_time).unix();
-                nextPost = moment(response.data[i+1].created_time).unix();
-                if((currPost - nextPost)  < secondsInWeek && (currPost - nextPost) > 86400)
-                  { count++;  }
-                else{
-                  if(count > max){
-                     max = count;
-                     console.log(max+" weeks in a row");
-                   }
-                  count = 0;
+              for(i = 0; i < response.data.length ; i++ ){
 
+                //console.log(streak + " posts less then a week apart but more than a day apart.");
+                currPost = moment(response.data[i].created_time).unix();
+                if(i != response.data.length -1){
+                nextPost = moment(response.data[i+1].created_time).unix();
+                }
+
+                if( (currPost - nextPost)  < oneWeek && (currPost - nextPost) > oneDay){
+                    streak++;
+                    console.log(moment(response.data[i].created_time).calendar());
+                    console.log(moment(response.data[i+1].created_time).calendar());
+                  }  else if (streak >= max){
+                     max = streak;
+                     console.log(max + "posts less then a week apart but more than a day apart.");
+                     streak = 0;
+                }  else {
+                  continue;
+
+                   //console.log(max + " posts less then a week apart");
                 }
                 //console.log(JSON.stringify(response.data[i].created_time));
-
-              }
-              console.log(new Date('2011-04-11T10:20:30Z'));
+              }}
+              console.log(response.data[0].id); //310163999410508_310898579337050
 
                 //The Recent Check
-                if(response.data[0].created_time > moment().subtract(10, 'days').calendar())
+                if(response.data[0].created_time > moment().subtract(10, 'days').calendar()){
                   console.log("I have posted in the last 10 days.");
-
-
+                }
 
             }
           );
+
+          /* make the API call */
+          FB.api(
+              "/myprofessors/likes",
+              function (response) {
+                if (response && !response.error) {
+                  console.log(response.data);/* handle the result */
+                }
+              }
+          );
+
+
         }, {scope:'manage_pages, publish_pages'});
 
 
