@@ -68,8 +68,9 @@
               console.log(response.data[0].id); //310163999410508_310898579337050
 
                 //The Recent Check
-                if(response.data[0].created_time > moment().subtract(10, 'days').calendar()){
-                  console.log("I have posted in the last 10 days.");
+                if(moment(response.data[0].created_time).unix() < moment().subtract(10, 'days').unix()){
+                  console.log("I haven't posted in the last 10 days.");
+
                 }
 
             });
