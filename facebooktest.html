@@ -25,11 +25,15 @@
             //console.log(JSON.stringify(response1.data));
           });
 
+          /*ANALYZING FEEDS*/
           FB.api(
             '/myprofessors/feed',
             'GET',
             {},
             function(response) { //analyzing all posts instead of most recent 10
+
+              /*ANALYZING POST CONSISTENCY*/
+
               var streak = 0;
               var max = -1;
               var oneWeek = 604800;
@@ -75,12 +79,17 @@
 
             });
 
-          /* make the API call */
+
+
+
+
+
+          /* ANALYZINGG POST LIKES */
           FB.api(
-              "/myprofessors/likes",
+              "/1051908698154339_1613736858638184/likes",
               function (response) {
                 if (response && !response.error) {
-                  console.log(response.data);/* handle the result */
+                  console.log(response.data.length);/* prints out the number of likes for post 1051908698154339_1613736858638184 */
                 }
               }
           );
