@@ -8,6 +8,9 @@
   <body>
     <div id="fb-root"></div>
     <script>
+
+      var poosts = [];
+
       window.fbAsyncInit = function() {
         FB.init({
           appId            : '1589800797697810',
@@ -25,7 +28,7 @@
             //console.log(JSON.stringify(response1.data));
           });
 
-          /*ANALYZING FEEDS*/
+          /*=======================ANALYZING FEEDS==============================*/
           FB.api(
             '/myprofessors/feed',
             'GET',
@@ -69,9 +72,21 @@
 
                 //console.log(JSON.stringify(response.data[i].created_time));
               };
-              console.log(response.data[0].id); //310163999410508_310898579337050
 
-                //The Recent Check
+              console.log("  //===================================================================================//");
+              //COLLECTING POST IDS IN GLOBAL ARRAY
+              for(i = 0; i < response.data.length ; i++ ){
+                poosts.push(response.data[i].id);
+                //console.log(response.data[i].id);
+              }
+
+              for(i = 0; i < poosts.length; i++){
+                console.log(poosts[i]);
+              }
+
+              //console.log(response.data[0].id); //310163999410508_310898579337050
+
+              //The Recent Check
                 if(moment(response.data[0].created_time).unix() < moment().subtract(10, 'days').unix()){
                   console.log("I haven't posted in the last 10 days.");
 
@@ -79,14 +94,21 @@
 
             });
 
+            // for(i = 0; i < poosts.length; i++){
+            //   console.log(poosts[i]);
+            // }
+            //===================================================================================//
 
 
 
 
+          /*======================= ANALYZINGG POST LIKES standalone ========================*/
 
-          /* ANALYZINGG POST LIKES */
+        // for(i = 0; i < 25 ; i++ ){
+        //     console.log(JSON.stringify(poosts[i]));
+        // }
           FB.api(
-              "/1051908698154339_1613736858638184/likes",
+              "/310163999410508_310898579337050/likes",
               function (response) {
                 if (response && !response.error) {
                   console.log(response.data.length);/* prints out the number of likes for post 1051908698154339_1613736858638184 */
@@ -95,6 +117,8 @@
           );
         }, {scope:'manage_pages, publish_pages'});
 
+
+        //=================================================================//
 
         FB.getLoginStatus(function(response) {
           if (response.status === 'connected') {
